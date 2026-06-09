@@ -1,0 +1,30 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build
+bin/
+obj/
+
+# Arquivos de log
+*.log
+
+# NuGet
+packages/
+*.nupkg
+
+# Arquivos gerados automaticamente pelo Designer
+# (mantenha o Form1.Designer.cs — ele é necessário)
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Arquivos temporários
+*.tmp
+*.temp
+*~
