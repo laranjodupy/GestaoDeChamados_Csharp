@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace primeiroprograma_emCu.Forms
+﻿namespace primeiroprograma_emCu.Forms
 {
-    internal class FormAtendente
+    public partial class FormAtendente : Form
     {
+        public FormAtendente()
+        {
+            InitializeComponent();
+        }
     }
 }

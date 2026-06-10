@@ -1,7 +1,10 @@
-﻿
-namespace primeiroprograma_emCu.Forms
+﻿namespace primeiroprograma_emCu.Forms
 {
-    internal class FormCliente
+    public partial class FormCliente : Form
     {
+        public FormCliente()
+        {
+            InitializeComponent();
+        }
     }
 }

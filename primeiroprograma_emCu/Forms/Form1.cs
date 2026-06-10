@@ -1,5 +1,6 @@
+using primeiroprograma_emCu.Forms;
 
-namespace primeiroprograma_emCu
+namespace primeiroprograma_emCu.Forms
 {
     public partial class Form1 : Form
     {
@@ -8,20 +9,22 @@ namespace primeiroprograma_emCu
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void btnClientes_Click(object sender, EventArgs e)
         {
-
+            FormCliente formCliente = new FormCliente();
+            formCliente.ShowDialog();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnAtendentes_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("joviteq");
-            label1.Text = "amo o justin";
+            FormAtendente formAtendente = new FormAtendente();
+            formAtendente.ShowDialog();
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void btnChamados_Click(object sender, EventArgs e)
         {
-
+            FormChamado formChamado = new FormChamado();
+            formChamado.ShowDialog();
         }
     }
 }
