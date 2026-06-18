@@ -8,12 +8,20 @@ namespace primeiroprograma_emCu.Models
     {
         AbrirChamado,
         AlterarStatusChamado,
+        ExcluirChamado,
 
         CadastrarCliente,
+        EditarCliente,
+        ExcluirCliente,
+
         CadastrarAtendente,
+        EditarAtendente,
+        ExcluirAtendente,
 
         ListarClientes,
         ListarAtendentes,
-        ListarChamados
+        ListarChamados,
+
+        GerenciarUsuarios
     }
 }
