@@ -17,7 +17,7 @@ namespace primeiroprograma_emCu.Services
                 new Usuario
                 {
                     Id = 1,
-                    Nome = "Administrador",
+                    Name = "Administrador",
                     Login = "admin",
                     SenhaHash = SecurityService.GerarHash("123456"),
                     Papel = Papel.Admin

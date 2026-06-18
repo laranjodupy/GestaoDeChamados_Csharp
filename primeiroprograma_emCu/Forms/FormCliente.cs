@@ -1,4 +1,5 @@
 ﻿using primeiroprograma_emCu.Models;
+using primeiroprograma_emCu.Services;
 
 namespace primeiroprograma_emCu.Forms
 {
@@ -10,12 +11,31 @@ namespace primeiroprograma_emCu.Forms
         public FormCliente(List<Cliente> clientes)
         {
             InitializeComponent();
+
             this.clientes = clientes;
+
+            AplicarPermissoes();
+
             AtualizarLista();
         }
+        private void AplicarPermissoes()
+        {
+            bool podeCadastrar =
+                PermissionService.TemPermissao(
+                    Sessao.UsuarioAtual.Papel,
+                    Permissao.CadastrarCliente);
 
+            btnCadastrar.Enabled = podeCadastrar;
+        }
         private void btnCadastrar_Click(object sender, EventArgs e)
         {
+            if (!PermissionService.TemPermissao(
+                Sessao.UsuarioAtual.Papel,
+                Permissao.CadastrarCliente))
+            {
+                MessageBox.Show("Acesso negado.");
+                return;
+            }
             if (string.IsNullOrWhiteSpace(txtNome.Text) || string.IsNullOrWhiteSpace(txtContato.Text))
             {
                 MessageBox.Show("Preenche nome e contato meu rei! 👑", "Campos vazios", MessageBoxButtons.OK, MessageBoxIcon.Warning);

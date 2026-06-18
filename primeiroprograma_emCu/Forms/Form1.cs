@@ -34,14 +34,27 @@ namespace primeiroprograma_emCu.Forms
         private void AplicarPermissoes()
         {
             var usuario = Sessao.UsuarioAtual;
-            if (usuario == null) return;
 
-            // Mostra o papel do usuário logado no título
-            this.Text = $"Sistema de Chamados — {usuario.Name} ({usuario.Papel})";
+            if (usuario == null)
+                return;
 
-            // Só Admin vê o botão de gerenciar usuários
-            // (adicione um btnUsuarios no Designer e descomente)
-            // btnUsuarios.Visible = usuario.Papel == Papel.Admin;
+            this.Text =
+                $"Sistema de Chamados — {usuario.Name} ({usuario.Papel})";
+
+            btnClientes.Enabled =
+                PermissionService.TemPermissao(
+                    usuario.Papel,
+                    Permissao.ListarClientes);
+
+            btnAtendentes.Enabled =
+                PermissionService.TemPermissao(
+                    usuario.Papel,
+                    Permissao.ListarAtendentes);
+
+            btnChamados.Enabled =
+                PermissionService.TemPermissao(
+                    usuario.Papel,
+                    Permissao.ListarChamados);
         }
 
         private void AtualizarContador()
@@ -53,6 +66,14 @@ namespace primeiroprograma_emCu.Forms
 
         private void btnClientes_Click(object sender, EventArgs e)
         {
+            if (!PermissionService.TemPermissao(
+                Sessao.UsuarioAtual.Papel,
+                Permissao.ListarClientes))
+            {
+                MessageBox.Show("Acesso negado.");
+                return;
+            }
+
             new FormCliente(clientes).ShowDialog();
             clientes = _clienteRepo.BuscarTodos(); // Recarrega do banco
             AtualizarContador();
@@ -60,14 +81,32 @@ namespace primeiroprograma_emCu.Forms
 
         private void btnAtendentes_Click(object sender, EventArgs e)
         {
+            if (!PermissionService.TemPermissao(
+                Sessao.UsuarioAtual.Papel,
+                Permissao.ListarAtendentes))
+            {
+                MessageBox.Show("Acesso negado.");
+                return;
+            }
+
             new FormAtendente(atendentes).ShowDialog();
+
             atendentes = _atendenteRepo.BuscarTodos();
             AtualizarContador();
         }
 
         private void btnChamados_Click(object sender, EventArgs e)
         {
+            if (!PermissionService.TemPermissao(
+                Sessao.UsuarioAtual.Papel,
+                Permissao.ListarChamados))
+            {
+                MessageBox.Show("Acesso negado.");
+                return;
+            }
+
             new FormChamado(chamados, clientes, atendentes).ShowDialog();
+
             chamados = _chamadoRepo.BuscarTodos();
             AtualizarContador();
         }
