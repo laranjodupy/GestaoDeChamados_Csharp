@@ -1,18 +1,15 @@
 ﻿using primeiroprograma_emCu.Models;
-using primeiroprograma_emCu.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;  
+using primeiroprograma_emCu.Repositories;
 
 namespace primeiroprograma_emCu.Services
 {
-    public class AuthService
+    public static class AuthService  // <-- muda para static
     {
-        private readonly List<Usuario> usuarios;
+        private static readonly UsuarioRepository _repo = new UsuarioRepository();
 
-        public AuthService()
+        public static bool Login(string login, string senha)
         {
+<<<<<<< HEAD
             usuarios = [
                 new Usuario
                 {
@@ -24,29 +21,28 @@ namespace primeiroprograma_emCu.Services
                 }
             ];
         }
+=======
+            var usuario = _repo.BuscarPorLogin(login);
+            if (usuario == null) return false;
+>>>>>>> 72a937cc722722d83febc9320f71d9202dbd0c17
 
-        public Usuario? Login(string login, string senha)
-        {
-            Usuario? usuario =
-                usuarios.FirstOrDefault(
-                    u => u.Login == login
-                );
-
-            if (usuario == null)
-                return null;
-
-            bool senhaValida =
-                SecurityService.VerificarSenha(
-                    senha,
-                    usuario.SenhaHash
-                );
-
-            if (!senhaValida)
-                return null;
+            bool ok = SecurityService.VerificarSenha(senha, usuario.SenhaHash);
+            if (!ok) return false;
 
             Sessao.UsuarioAtual = usuario;
+            return true;
+        }
 
-            return usuario;
+        public static void Logout()
+        {
+            Sessao.UsuarioAtual = null;
+        }
+
+        // Usa o PermissionService que você já tem — aproveita o seu design!
+        public static bool TemPermissao(Permissao permissao)
+        {
+            if (Sessao.UsuarioAtual == null) return false;
+            return PermissionService.TemPermissao(Sessao.UsuarioAtual.Papel, permissao);
         }
     }
 }
