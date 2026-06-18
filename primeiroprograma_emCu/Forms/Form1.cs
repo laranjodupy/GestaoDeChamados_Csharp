@@ -1,27 +1,49 @@
 using primeiroprograma_emCu.Models;
+using primeiroprograma_emCu.Repositories;
+using primeiroprograma_emCu.Services;
 
 namespace primeiroprograma_emCu.Forms
 {
     public partial class Form1 : Form
     {
-        private List<Cliente> clientes = new List<Cliente>();
-        private List<Atendente> atendentes = new List<Atendente>();
-        private List<Chamado> chamados = new List<Chamado>();
+        // Agora as listas vêm do banco, não são mais mockadas
+        private List<Cliente> clientes = new();
+        private List<Atendente> atendentes = new();
+        private List<Chamado> chamados = new();
+
+        private readonly ClienteRepository _clienteRepo = new();
+        private readonly AtendenteRepository _atendenteRepo = new();
+        private readonly ChamadoRepository _chamadoRepo = new();
 
         public Form1()
         {
             InitializeComponent();
-
-            // Dados mockados pra teste
-            clientes.Add(new Cliente(1, "Guigui do job", "quatrozerozerodois"));
-            clientes.Add(new Cliente(2, "Maria Souza", "oitonovedoisdois"));
-            atendentes.Add(new Atendente(1, "Vitin deviops", "Menino do pc"));
-            atendentes.Add(new Atendente(2, "Ana do PCC", "Tráfico"));
-
+            CarregarDados();
+            AplicarPermissoes();
             AtualizarContador();
         }
 
-        // Atualiza o contador toda vez que um formulário fecha
+        private void CarregarDados()
+        {
+            // Carrega tudo do banco na inicialização
+            clientes = _clienteRepo.BuscarTodos();
+            atendentes = _atendenteRepo.BuscarTodos();
+            chamados = _chamadoRepo.BuscarTodos();
+        }
+
+        private void AplicarPermissoes()
+        {
+            var usuario = Sessao.UsuarioAtual;
+            if (usuario == null) return;
+
+            // Mostra o papel do usuário logado no título
+            this.Text = $"Sistema de Chamados — {usuario.Name} ({usuario.Papel})";
+
+            // Só Admin vê o botão de gerenciar usuários
+            // (adicione um btnUsuarios no Designer e descomente)
+            // btnUsuarios.Visible = usuario.Papel == Papel.Admin;
+        }
+
         private void AtualizarContador()
         {
             int abertos = chamados.Count(c => c.Status == "Aberto");
@@ -32,18 +54,21 @@ namespace primeiroprograma_emCu.Forms
         private void btnClientes_Click(object sender, EventArgs e)
         {
             new FormCliente(clientes).ShowDialog();
+            clientes = _clienteRepo.BuscarTodos(); // Recarrega do banco
             AtualizarContador();
         }
 
         private void btnAtendentes_Click(object sender, EventArgs e)
         {
             new FormAtendente(atendentes).ShowDialog();
+            atendentes = _atendenteRepo.BuscarTodos();
             AtualizarContador();
         }
 
         private void btnChamados_Click(object sender, EventArgs e)
         {
             new FormChamado(chamados, clientes, atendentes).ShowDialog();
+            chamados = _chamadoRepo.BuscarTodos();
             AtualizarContador();
         }
     }

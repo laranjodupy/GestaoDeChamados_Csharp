@@ -6,8 +6,8 @@ namespace primeiroprograma_emCu.Models
 {
     public enum Papel
     {
-        Admin,
-        Atendente,
-        Cliente
+        Admin = 1,
+        Operador = 2,
+        Visualizador = 3
     }
 }
