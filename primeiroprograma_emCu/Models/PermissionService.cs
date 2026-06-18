@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace primeiroprograma_emCu.Models
+﻿namespace primeiroprograma_emCu.Models
 {
     public static class PermissionService
     {
-        private static readonly Dictionary<Papel, List<Permissao>>
-            permissoesPorPapel =
+        private static readonly Dictionary<Papel, List<Permissao>> permissoesPorPapel =
             new Dictionary<Papel, List<Permissao>>
         {
             {
@@ -16,47 +11,39 @@ namespace primeiroprograma_emCu.Models
                 {
                     Permissao.AbrirChamado,
                     Permissao.AlterarStatusChamado,
-
                     Permissao.CadastrarCliente,
                     Permissao.CadastrarAtendente,
-
                     Permissao.ListarClientes,
                     Permissao.ListarAtendentes,
                     Permissao.ListarChamados
                 }
             },
-
             {
-                Papel.Atendente,
+                Papel.Operador,  // era Papel.Atendente
                 new List<Permissao>
                 {
                     Permissao.AbrirChamado,
                     Permissao.AlterarStatusChamado,
-
                     Permissao.CadastrarCliente,
-
                     Permissao.ListarClientes,
                     Permissao.ListarAtendentes,
                     Permissao.ListarChamados
                 }
             },
-
             {
-                Papel.Cliente,
+                Papel.Visualizador,  // era Papel.Cliente
                 new List<Permissao>
                 {
-                    Permissao.AbrirChamado,
-                    Permissao.ListarChamados
+                    Permissao.ListarChamados,
+                    Permissao.ListarClientes,
+                    Permissao.ListarAtendentes
                 }
             }
         };
 
-        public static bool TemPermissao(
-            Papel papel,
-            Permissao permissao)
+        public static bool TemPermissao(Papel papel, Permissao permissao)
         {
-            return permissoesPorPapel[papel]
-                .Contains(permissao);
+            return permissoesPorPapel[papel].Contains(permissao);
         }
     }
 }
